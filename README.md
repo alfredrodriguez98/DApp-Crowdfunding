@@ -1,1 +1,1 @@
-# Crowdfunding
+# Decentralized Crowdfunding
