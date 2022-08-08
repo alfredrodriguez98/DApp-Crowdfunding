@@ -1,0 +1,90 @@
+#! /bin/zsh
+
+URL=$1
+
+fork=false
+unlock=false
+network=
+networkURL=
+accounts=
+
+command="npx ganache --defaultBalanceEther 90000000000000 -v -m \$MNEMONIC"
+
+function load_dotenv(){
+  set -a
+  source <(cat .env | sed -e '/^#/d;/^\s*$/d' -e "s/'/'\\\''/g" -e "s/=\(.*\)/='\1'/g")
+  set +a
+}
+
+if [ -z $MNEMONIC ]
+then
+load_dotenv
+fi
+
+Help()
+{
+   # Display Help
+   echo "Custom Ganache script to easily fork any chain from .env file."
+   echo
+   echo "Syntax: ./ganache [option] [args]"
+   echo
+   echo "[Options]"
+   echo
+   echo "-n     Networks: eth, bsc, polygon, smartbch"
+   echo         "For testnets add _testnet. Example: bsc_testnet"
+   echo "-h     Print this Help."
+   echo "-u     unlocks the given accounts."
+   echo
+}
+
+
+while getopts "hn:u:" option; do
+   case $option in
+      h) # display Help
+         Help
+         exit;;
+      n) # Enter networkname
+         fork=true
+         network=$OPTARG;;
+      u) # unlock accounts
+         unlock=true
+         accounts=$OPTARG;;
+      \?) # Invalid option
+         echo "Error: Invalid option. Please refer Help page"
+         Help
+         exit;;
+   esac
+done
+
+
+case $network in
+      "eth")
+         networkURL=$ETH_MAINNET_NOWNODE$NOWNODES_API;;
+      "eth_testnet")
+         networkURL=$ETH_TESTNET_NOWNODE$NOWNODES_API;;
+      "bsc")
+         networkURL=$BSC_MAINNET_NOWNODE$NOWNODES_API;;
+      "bsc_testnet")
+         networkURL=$BSC_TESTNET_NOWNODE$NOWNODES_API;;
+      "polygon")
+         networkURL=$POLYGON_MAINNET;;
+      "polygon_testnet")
+         networkURL=$POLYGON_TESTNET;;
+      "smartbch")
+         networkURL=$SMARTBCH_MAINNET;;
+      "smartbch_testnet")
+         networkURL=$SMARTBCH_TESTNET;;
+esac
+
+if [ $fork ] && [ $unlock ]
+then
+eval $command -f $networkURL --unlock $accounts
+elif [ $fork ] && [ $unlock = false ]
+then
+eval $command -f $networkURL
+elif [ $fork = false ] && [ $unlock ]
+then
+eval $command --unlock $accounts
+else
+eval $command
+fi

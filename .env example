@@ -1,0 +1,37 @@
+# .env example
+
+
+#################################################################################################
+#                                                                                               #
+#               Please Fill up he following variables and rename the file as .env               #
+#               Keep the same formate, no spaces between variabel name and value.               #
+#               As ganache script uses shell script syntax, its neccessary to                   #
+#               keep it that way.                                                               #
+#                                                                                               #
+#               Feel Free to modify the way it fits your requirement.                           #
+#                                                                                               #
+#################################################################################################
+
+
+# Never disclose
+
+MNEMONIC=""
+BSCSCAN_API=""
+ETHSCAN_API=""
+POLYGON_API=""
+TATUM_MAINNET_API=""
+NOWNODES_API=""
+
+# Can be disclosed
+
+# Mainnets
+ETH_MAINNET_NOWNODE="https://eth.nownodes.io/" # API key goes next NOWNODES_API
+BSC_MAINNET_NOWNODE="https://bsc.nownodes.io/"
+PLYGON_MAINNET="https://polygon-rpc.com"
+SMARTBSCH_MAINNET="https://smartbch.fountainhead.cash/mainnet"
+
+# TestNets
+ETH_ROPSTEN_NOWNODE="https://eth-ropsten.nownodes.io/"
+BSC_TESTNET_NOWNODE="https://data-seed-prebsc-2-s3.binance.org:8545"
+POLYGON_TESTNET_NOWNODE="https://matic-mumbai.chainstacklabs.com"
+SMARTBCH_TESTNET_NOWNODE="http://35.220.203.194:8545"
